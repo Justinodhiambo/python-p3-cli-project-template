@@ -26,5 +26,10 @@ Setup
 
 To run the Budget Manager CLI application:
 * Clone the repository to your local machine.
+
 * Navigate to the project directory.
-* Set up a virtual environment using Pipenv install Activate the virtual environment: pipenv shell Run the CLI application: python cli.py
+
+* Set up a virtual environment:
+using Pipenv install
+Activate the virtual environment: pipenv shell 
+Run the CLI application: python cli.py
