@@ -4,6 +4,7 @@ from db.models import Base, Category, Expense
 
 
 engine = create_engine('sqlite:///budget.db')
+Base.metadata.create_all(engine)  # Create tables in the database
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -62,7 +63,13 @@ def manage_expenses():
         if choice == '1':
             name = input("Enter expense name: ")
             amount = float(input("Enter expense amount: "))
-            category_id = int(input("Enter category ID: "))
+            while True:
+                category_id_input = input("Enter category ID: ")
+                if category_id_input.isdigit():
+                    category_id = int(category_id_input)
+                    break
+                else:
+                    print("Invalid input. Category ID must be a number.")
             expense = Expense.create(session, name, amount, category_id)
             print(f"Expense '{expense.name}' added successfully.")
         elif choice == '2':
@@ -73,13 +80,16 @@ def manage_expenses():
             expenses = Expense.get_all(session)
             if expenses:
                 for expense in expenses:
-                    print(f"{expense.id}: {expense.name} - {expense.formatted_amount} ({expense.category.name})")
+                    category_name = expense.category.name if expense.category else "Uncategorized"
+                    print(f"{expense.id}: {expense.name} - {expense.formatted_amount} ({category_name})")
             else:
                 print("No expenses found.")
         elif choice == '4':
             break
         else:
             print("Invalid choice. Please try again.")
+
+
 
 if __name__ == "__main__":
     while True:
